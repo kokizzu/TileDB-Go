@@ -136,6 +136,7 @@ func (d *DimensionLabel) URI() (string, error) {
 // AddDimensionLabel adds a dimension label to the array schema.
 func (a *ArraySchema) AddDimensionLabel(dimIndex uint32, name string, order DataOrder, labelType Datatype) error {
 	cLabelName := C.CString(name)
+	defer C.free(unsafe.Pointer(cLabelName))
 	ret := C.tiledb_array_schema_add_dimension_label(a.context.tiledbContext.Get(), a.tiledbArraySchema.Get(),
 		C.uint32_t(dimIndex), cLabelName, C.tiledb_data_order_t(order), C.tiledb_datatype_t(labelType))
 	runtime.KeepAlive(a)
