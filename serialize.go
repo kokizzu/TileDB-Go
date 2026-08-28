@@ -81,6 +81,7 @@ func DeserializeArrayCreate(buffer *Buffer, serializationType SerializationType,
 	if ret != C.TILEDB_OK {
 		return nil, "", fmt.Errorf("error deserializing array creation request: %w", buffer.context.LastError())
 	}
+	defer C.tiledb_string_free(&tdbString)
 
 	uri, err := stringHandleToString(tdbString)
 	if err != nil {
